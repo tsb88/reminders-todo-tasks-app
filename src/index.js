@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
+import React, { } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import TodoList from "./TodoList";
+import TodoList from "./TodoList/TodoList";
 
-var destination = document.querySelector("#container");
-// quick edit to remove node modules in git commit
+//var destination = document.querySelector("#container");
 
 ReactDOM.render(
   <div>
@@ -12,5 +11,3 @@ ReactDOM.render(
   </div>,
   document.getElementById('root')
 );
-  
-  

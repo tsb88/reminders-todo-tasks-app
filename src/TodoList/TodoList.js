@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import TodoItems from "../TodoItems/TodoItems";
+import Button from '@material-ui/core/Button';
 import "./TodoList.css";
 
 class TodoList extends Component {
@@ -48,13 +49,14 @@ class TodoList extends Component {
     render() {
       return (
         <div className="todoListMain">
+          <h2>Tasks/To-Do List</h2>
           <div className="header">
             <form onSubmit={this.addItem}>
               <input ref={(a) => this._inputElement = a} placeholder="Enter Task">
               </input>
-              <button type="submit">
+              <Button style={{marginLeft: 10}} type="submit" variant="contained" color="primary">
                 Add Task
-              </button>
+              </Button>
             </form>
           </div>
           <TodoItems entries={this.state.items}

@@ -1,5 +1,10 @@
 import React, { Component } from "react";
 import "./TodoItems.css";
+import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 
 class TodoItems extends Component {
 
@@ -10,17 +15,25 @@ class TodoItems extends Component {
     }
 
     createTasks(item) {
-        return <div key={item.key} className="header">
-                <li>
-                    {item.text}
-                </li>
-                <button>
-                    Edit
-                </button>
-                <button onClick={() => this.delete(item.key)}>
-                    Delete
-                </button>
-            </div>
+        return <List
+                component="nav"
+                aria-labelledby="nested-list-subheader"
+            >
+                <ListItem key={item.key}>
+                    <Checkbox
+                        // checked={checked}
+                        // onChange={handleChange}
+                        inputProps={{ 'aria-label': 'primary checkbox' }}
+                    />
+                    <ListItemText primary={item.text} />
+                    <Button style={{marginRight: 10}} variant="contained" color="primary">
+                        Edit
+                    </Button>
+                    <Button variant="contained" color="primary" onClick={() => this.delete(item.key)}>
+                        Delete
+                    </Button>
+                </ListItem>
+            </List>
     }
 
     delete(key) {

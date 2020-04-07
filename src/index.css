@@ -4,7 +4,7 @@
     background-color: #eeeeee;
     font-family: sans-serif;
   }
-  #container {
+  #root {
     display: flex;
     justify-content: center;
   }

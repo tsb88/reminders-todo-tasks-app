@@ -1,30 +1,36 @@
-.todoListMain .theList {
+  .theList {
     list-style: none;
+    justify-content: center;
     padding-left: 0;
     width: 400px;
   } 
-  .todoListMain .theList li {
+  .theList li {
     color: #ffffff;
     background-color: rgba(129, 129, 129, 0.74);
-    padding: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: center;
+    margin-top: 10px;
+    display: flex;
     width: auto;
-    flex-wrap: wrap;
     border-radius: 5px;
     list-style: none;
+    transition: background-color .2s ease-out;
   }
   ul.theList {
     padding: 0;
   }
 
-  .todoListMain .header button {
+  .subHeader button {
     font-size: 16px;
     margin: 10px;
     margin-right: 0px;
+    float: right;
     background-color: #0066FF;
     color: #FFF;
     border: 2px solid #0066FF;
   }
-  .todoListMain .header button:hover {
+  .subHeader button:hover {
     background-color: #003399;
     border: 2px solid #003399;
     cursor: pointer;

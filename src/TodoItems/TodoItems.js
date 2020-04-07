@@ -1,10 +1,19 @@
 import React, { Component } from "react";
+import "./TodoItems.css";
 
 class TodoItems extends Component {
     createTasks(item) {
-        return <li key={item.key}>
-            {item.text}
-        </li>
+        return <div className="header">
+                <li key={item.key}>
+                    {item.text}
+                </li>
+                <button>
+                    Edit
+                </button>
+                <button>
+                    Delete
+                </button>
+            </div>
     }
 
     render() {

@@ -2,13 +2,12 @@ import React, { } from 'react';
 import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
-import TodoList from "./TodoList/TodoList";
-
-//var destination = document.querySelector("#container");
+import App from "./App";
+import { BrowserRouter as Router } from 'react-router-dom';
 
 ReactDOM.render(
-  <div>
-    <TodoList />
-  </div>,
+  <Router>
+    <App />
+  </Router>,
   document.getElementById('root')
 );

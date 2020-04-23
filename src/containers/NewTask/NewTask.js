@@ -3,8 +3,10 @@ import { useHistory } from "react-router-dom";
 import { FormGroup, FormControl, FormLabel } from "react-bootstrap";
 import LoaderButton from "../../components/LoaderButton";
 import { onError } from "../../libs/errorLib";
+import { API } from "aws-amplify";
 import config from "../../config";
 import "./NewTask.css";
+import { s3Upload } from "../../libs/awsLib";
 
 export default function NewTask() {
     const file = useRef(null);
@@ -30,6 +32,20 @@ export default function NewTask() {
             return;
         }
         setIsLoading(true);
+        try {
+            const attachment = file.current ? await s3Upload(file.current) : null;
+            await createTask({ content, attachment });
+            history.push("/");
+        } catch (e) {
+            onError(e);
+            setIsLoading(false);
+        }
+    }
+
+    function createTask(task) {
+        return API.post("tasks", "/tasks", {
+            body: task
+        });
     }
 
     return (
@@ -53,7 +69,7 @@ export default function NewTask() {
                     block
                     type="submit"
                     bsSize="large"
-                    bsStyle="primary"
+                    bsstyle="primary"
                     isLoading={isLoading}
                     disabled={!validateForm()}
                 >

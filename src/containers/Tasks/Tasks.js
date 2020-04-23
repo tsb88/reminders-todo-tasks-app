@@ -3,9 +3,10 @@ import { useParams, useHistory } from "react-router-dom";
 import { API, Storage } from "aws-amplify";
 import { onError } from "../../libs/errorLib";
 import config from "../../config";
-import { FormGroup, FormControl, FormLabel, FormFile, Button } from "react-bootstrap";
+import { FormGroup, FormControl, FormLabel, FormFile, Button, InputGroup, Col } from "react-bootstrap";
 import LoaderButton from "../../components/LoaderButton";
 import "./Tasks.css";
+import { InputGroupAppend } from "react-bootstrap/InputGroup";
 
 export default function Tasks() {
     const file = useRef(null);
@@ -80,24 +81,26 @@ export default function Tasks() {
             {
                 task && (
                     <form onSubmit={handleSubmit}>
-                        <FormGroup controlId="content">
-                        <span>
+                        <FormGroup>
+                        <InputGroup controlId="content" as={Col}>
                             <FormControl
                                 value={content}
                                 componentclass="textarea"
                                 onChange={e => setContent(e.target.value)}
                             />
-                            <Button
-                                variant="outline-secondary"
-                            >
-                                <b>{"\uFF0B"}</b>
-                            </Button>
-                            </span>
+                            <InputGroup.Append>
+                                <Button
+                                    variant="outline-secondary"
+                                >
+                                    <b>{"\uFF0B"}</b>
+                                </Button>
+                            </InputGroup.Append>
+                        </InputGroup>
                         </FormGroup>
                         {
                             task.attachment && (
                                 <FormGroup>
-                                    <FormLabel>Attachment</FormLabel>
+                                    <b><FormLabel>Attachment</FormLabel></b>
                                     <div>
                                         <FormFile.Label>
                                             <a 

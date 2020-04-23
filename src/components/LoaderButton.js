@@ -11,6 +11,7 @@ export default function LoaderButton({
 }) {
     return (
         <Button
+        className = "LoaderButton"
         disabled={disabled || isLoading}
         {...props}>
             {isLoading && <FontAwesomeIcon icon="sync" className="fontawesome" spin />}

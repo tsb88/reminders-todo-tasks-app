@@ -19,7 +19,6 @@ export default function Home() {
 
       try {
         const tasks = await loadTasks();
-        console.log("1: " + tasks[0].content);
         setTasks(tasks);
       } catch (e) {
         onError(e);
@@ -34,12 +33,11 @@ export default function Home() {
   }
 
   function renderTasksList(tasks) {
-    console.log("2: " + tasks[0].content);
     return [{}].concat(tasks).map((task, i) => i !== 0 ? 
       (
         <LinkContainer key={task.taskId} to={`/tasks/${task.taskId}`}>
           <ListGroupItem>
-            <h4><b>{task.content.trim().split("\n")[0]}</b></h4>
+            <h4>{task.content.trim().split("\n")[0]}</h4>
             {"Created: " + new Date(task.createdAt).toLocaleString()}
           </ListGroupItem>
         </LinkContainer>
@@ -47,7 +45,7 @@ export default function Home() {
         <LinkContainer key="new" to="/tasks/new">
           <ListGroupItem>
             <h4>
-              <b>{"\uFF0B"}</b> Create a new task
+              <b>{"\uFF0B"} Create a new task </b>
             </h4>
           </ListGroupItem>
         </LinkContainer>
@@ -65,7 +63,6 @@ export default function Home() {
   }
 
   function renderTasks() {
-    // console.log("3: " + tasks[0].content);
     return (
       <div>
         <h1 className="tasks">Your Tasks</h1>

@@ -53,6 +53,7 @@ export default function NewTask() {
             <form onSubmit={handleSubmit}>
                 <FormGroup controlId="content">
                     <FormControl
+                        placeholder="Enter task"
                         value={content}
                         componentClass="textarea"
                         onChange={e => setContent(e.target.value)}
@@ -66,10 +67,8 @@ export default function NewTask() {
                     />
                 </FormGroup>
                 <LoaderButton
-                    block
                     type="submit"
-                    bsSize="large"
-                    bsstyle="primary"
+                    variant="primary"
                     isLoading={isLoading}
                     disabled={!validateForm()}
                 >

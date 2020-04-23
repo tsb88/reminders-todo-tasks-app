@@ -5,6 +5,7 @@ import NotFound from "./containers/NotFound/NotFound";
 import Login from "./containers/Login/Login";
 import Signup from "./containers/Signup/Signup";
 import NewTask from "./containers/NewTask/NewTask";
+import Tasks from "./containers/Tasks/Tasks";
 
 export default function Routes() {
   return (
@@ -20,6 +21,9 @@ export default function Routes() {
       </Route>
       <Route exact path="/tasks/new">
         <NewTask />
+      </Route>
+      <Route exact path="/tasks/:id">
+        <Tasks />
       </Route>
       <Route>
         <NotFound />

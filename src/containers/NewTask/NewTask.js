@@ -1,10 +1,12 @@
 import React, { useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { FormGroup, FormControl, FormLabel } from "react-bootstrap";
-import LoaderButton from "../../components/LoaderButton";
+import LoaderButton from "../../components/LoaderButton/LoaderButton";
 import { onError } from "../../libs/errorLib";
+import { API } from "aws-amplify";
 import config from "../../config";
 import "./NewTask.css";
+import { s3Upload } from "../../libs/awsLib";
 
 export default function NewTask() {
     const file = useRef(null);
@@ -30,6 +32,20 @@ export default function NewTask() {
             return;
         }
         setIsLoading(true);
+        try {
+            const attachment = file.current ? await s3Upload(file.current) : null;
+            await createTask({ content, attachment });
+            history.push("/");
+        } catch (e) {
+            onError(e);
+            setIsLoading(false);
+        }
+    }
+
+    function createTask(task) {
+        return API.post("tasks", "/tasks", {
+            body: task
+        });
     }
 
     return (
@@ -37,6 +53,7 @@ export default function NewTask() {
             <form onSubmit={handleSubmit}>
                 <FormGroup controlId="content">
                     <FormControl
+                        placeholder="Enter task"
                         value={content}
                         componentClass="textarea"
                         onChange={e => setContent(e.target.value)}
@@ -50,10 +67,8 @@ export default function NewTask() {
                     />
                 </FormGroup>
                 <LoaderButton
-                    block
                     type="submit"
-                    bsSize="large"
-                    bsStyle="primary"
+                    variant="primary"
                     isLoading={isLoading}
                     disabled={!validateForm()}
                 >

@@ -42,7 +42,7 @@ export default function Signup() {
 
         setIsLoading(true);
         try {
-            const newUser = await Auth.signup({
+            const newUser = await Auth.signUp({
                 username: fields.email,
                 password: fields.password
             });

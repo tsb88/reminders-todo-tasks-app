@@ -4,9 +4,9 @@ import { API, Storage } from "aws-amplify";
 import { onError } from "../../libs/errorLib";
 import config from "../../config";
 import { FormGroup, FormControl, FormLabel, FormFile, Button, InputGroup, Col } from "react-bootstrap";
-import LoaderButton from "../../components/LoaderButton";
+import LoaderButton from "../../components/LoaderButton/LoaderButton";
 import "./Tasks.css";
-import { InputGroupAppend } from "react-bootstrap/InputGroup";
+import { s3Upload, s3Delete } from "../../libs/awsLib";
 
 export default function Tasks() {
     const file = useRef(null);
@@ -50,6 +50,36 @@ export default function Tasks() {
         file.current = event.target.files[0];
     }
 
+    // TODO
+    // Implement functionality to create a subtask within main task
+    // function addSubTask() {
+
+    //     console.log("adding tasks " + subTasks);
+    //     return subTasks.map((subTask) =>
+    //     (
+    //         <ListGroupItem key={subTask}>
+    //             <FormGroup>
+    //                 <FormControl
+    //                     value={subTask}
+    //                     componentclass="textarea"
+    //                     // onChange={e => setContent(e.target.value)}
+    //                 />
+    //             </FormGroup>
+    //         </ListGroupItem>
+    //     )
+    //     );
+    // }
+
+    function saveTask(task) {
+        return API.put("tasks", `/tasks/${id}`, {
+            body: task
+        });
+    }
+
+    function deleteTask() {
+        return API.del("tasks", `/tasks/${id}`);
+    }
+
     async function handleSubmit(event) {
         event.preventDefault();
 
@@ -61,19 +91,47 @@ export default function Tasks() {
             return;
         }
         setIsLoading(true);
+
+        try {
+            if (file.current) {
+                attachment = await s3Upload(file.current);
+            }
+
+            if (attachment) {
+                await s3Delete(task.attachment);
+            }
+
+            await saveTask({
+                content,
+                attachment: attachment || task.attachment
+            });
+            history.push("/");
+        } catch (e) {
+            onError(e);
+            setIsLoading(false);
+        }
     }
 
     async function handleDelete(event) {
         event.preventDefault();
 
         const confirmed = window.confirm(
-            "Are you sure you want to delete this task?"
+            "Are you sure you want to delete this task? The task and it's attachment will be deleted."
         );
 
         if (!confirmed) {
             return;
         }
         setIsDeleting(true);
+
+        try {
+            await s3Delete(task.attachment);
+            await deleteTask();
+            history.push("/");
+        } catch (e) {
+            onError(e);
+            setIsDeleting(false);
+        }
     }
 
     return (
@@ -82,21 +140,23 @@ export default function Tasks() {
                 task && (
                     <form onSubmit={handleSubmit}>
                         <FormGroup>
-                        <InputGroup controlId="content" as={Col}>
-                            <FormControl
-                                value={content}
-                                componentclass="textarea"
-                                onChange={e => setContent(e.target.value)}
-                            />
-                            <InputGroup.Append>
-                                <Button
-                                    variant="outline-secondary"
-                                >
-                                    <b>{"\uFF0B"}</b>
-                                </Button>
-                            </InputGroup.Append>
-                        </InputGroup>
+                            <InputGroup controlid="content" as={Col}>
+                                <FormControl
+                                    value={content}
+                                    componentclass="textarea"
+                                    onChange={e => setContent(e.target.value)}
+                                />
+                                <InputGroup.Append>
+                                    <Button
+                                        variant="outline-secondary"
+                                        // onClick={addSubTask}
+                                    >
+                                        <b>{"\uFF0B"}</b>
+                                    </Button>
+                                </InputGroup.Append>
+                            </InputGroup>
                         </FormGroup>
+                        {/* <ListGroup>{addSubTask}</ListGroup> */}
                         {
                             task.attachment && (
                                 <FormGroup>
@@ -133,11 +193,11 @@ export default function Tasks() {
                             </LoaderButton>
                             <LoaderButton
                                 size="lg"
-                                variant="danger"
+                                variant="success"
                                 onClick={handleDelete}
                                 isLoading={isDeleteting}
                             >
-                                Delete
+                                Complete
                             </LoaderButton>
                     </form>
                 )

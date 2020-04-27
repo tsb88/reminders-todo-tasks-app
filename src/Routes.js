@@ -6,6 +6,8 @@ import Login from "./containers/Login/Login";
 import Signup from "./containers/Signup/Signup";
 import NewTask from "./containers/NewTask/NewTask";
 import Tasks from "./containers/Tasks/Tasks";
+import AuthenticatedRoute from "./components/AuthenticatedRoute/AuthenticatedRoute";
+import UnauthenticatedRoute from "./components/UnauthenticatedRoute/UnauthenticatedRoute";
 
 export default function Routes() {
   return (
@@ -13,18 +15,18 @@ export default function Routes() {
       <Route exact path="/">
         <Home />
       </Route>
-      <Route exact path="/login">
+      <UnauthenticatedRoute exact path="/login">
         <Login />
-      </Route>
-      <Route exact path="/signup">
+      </UnauthenticatedRoute>
+      <UnauthenticatedRoute exact path="/signup">
         <Signup />
-      </Route>
-      <Route exact path="/tasks/new">
+      </UnauthenticatedRoute>
+      <AuthenticatedRoute exact path="/tasks/new">
         <NewTask />
-      </Route>
-      <Route exact path="/tasks/:id">
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/tasks/:id">
         <Tasks />
-      </Route>
+      </AuthenticatedRoute>
       <Route>
         <NotFound />
       </Route>
